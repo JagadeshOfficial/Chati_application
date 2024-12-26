@@ -1,4 +1,4 @@
-import { LinkSimple, PaperPlaneTilt, Phone, VideoCamera, Gif, Microphone } from "@phosphor-icons/react"
+import { PaperPlaneTilt, Phone, VideoCamera, Gif, Microphone } from "@phosphor-icons/react"
 import User01 from "../../images/user/user-01.png"
 import Dropdown from "../../components/Dropdown"
 import EmojiPicker from "../../components/EmojiPicker"
@@ -7,12 +7,32 @@ import UserInfo from "./UserInfo"
 import Giphy from "../../components/Giphy"
 import { useDispatch } from "react-redux"
 import { ToggleAudioModal } from "../../redux/slices/app"
+import Attachment from "../../components/Attachment"
+import MsgSeperator from "../../components/MsgSeperator"
+import TypingIndicator from "../../components/TypingIndicator"
+import { DocumentMessage, MediaMessage, TextMessage, VoiceMessage } from "../../components/Messages"
+import VideoRoom from "../../components/VideoRoom"
+import AudioRoom from "../../components/AudioRoom"
+
+
+
 
 export default function Inbox() {
 
     const dispatch = useDispatch();
 
     const [userInfoOpen, setUserInfoOpen] = useState(false);
+
+    const [videoCall, setVideoCall] = useState(false);
+    const [audioCall, setAudioCall] = useState(false);
+
+    const handleToggleVideo = () => {
+        setVideoCall((p) => !p);
+    }
+    const handleToggleAudio = () => {
+        setAudioCall((p) => !p);
+    }
+
 
     const [gifOpen, setGifOpen] = useState(false);
 
@@ -25,11 +45,12 @@ export default function Inbox() {
         setUserInfoOpen((prev) => !prev);
     };
 
-    const handleMicClick = (e) => {   
+    const handleMicClick = (e) => {
         e.preventDefault();
-
         dispatch(ToggleAudioModal(true));
     }
+
+
     return (
         <>
             <div
@@ -62,10 +83,10 @@ export default function Inbox() {
                     </div>
 
                     <div className="flex flex-row items-center space-x-8">
-                        <button>
+                        <button onClick={handleToggleVideo}>
                             <VideoCamera size={24} />
                         </button>
-                        <button>
+                        <button onClick={handleToggleAudio}>
                             <Phone size={24} />
                         </button>
                         <Dropdown />
@@ -77,19 +98,7 @@ export default function Inbox() {
                 {/* List of Messages */}
 
                 <div className="max-h-full space-y-3.5 overflow-auto no-scrollbar px-6 py-7.5 grow">
-                    <div className="max-w-125">
-                        <p className="mb-2.5 text-sm  font-medium">
-                            Andri Thomas
-                        </p>
-                        <div className="mb-2.5 rounded-2xl rounded-tl-none bg-gray px-5 py-3 text-black">
-                            <p className="">
-                                I want to make an appointment tomorrow 2pm to 5pm ?
-                            </p>
-                        </div>
-                        <p className="text-xs">
-                            1.55 pm
-                        </p>
-                    </div>
+                    <TextMessage author="Jagadesh Vana" content="Hi there, This is My 1st Message https://www.npmjs.com/" read_receipt="delivered" incoming={true} timestamp="2:44pm" />
 
                     <div className="max-w-125 ml-auto">
                         <div className="mb-2.5 rounded-2xl rounded-br-none bg-primary px-5 py-3 ">
@@ -101,7 +110,10 @@ export default function Inbox() {
                             1.57 pm
                         </p>
                     </div>
-
+                    <MsgSeperator />
+                    <DocumentMessage author="Jagadesh Vana" incoming={true} read_receipt="read" timestamp="4:23pm" />
+                    <VoiceMessage incoming={true} read_receipt="delivered" timestamp="4:44PM" />
+                    <MediaMessage assets={[]} author="Jagadesh" caption="This is a beautiful Car" incoming timestamp={"4.55PM"} read_reciept="read" />
                     <div className="max-w-125">
                         <p className="mb-2.5 text-sm  font-medium">
                             Andri Thomas
@@ -199,6 +211,8 @@ export default function Inbox() {
                         </p>
                     </div>
 
+                    <TypingIndicator />
+
 
                 </div>
 
@@ -214,14 +228,17 @@ export default function Inbox() {
 
                             <div className="absolute right-5 top-1/2 -translate-y-1/2 items-center justify-end space-x-4">
 
+
                                 <button onClick={handleMicClick} className="hover:text-primary">
 
                                     <Microphone size={24} />
 
                                 </button>
-                                <button className="hover:text-primary">
+                                <button
 
-                                    <LinkSimple size={24} />
+                                    className="hover:text-primary">
+
+                                    <Attachment />
 
                                 </button>
                                 <button onClick={handleToggleGif}>
@@ -247,6 +264,10 @@ export default function Inbox() {
                 </div>
 
             </div>
+
+            {videoCall && <VideoRoom open={videoCall} handleClose={handleToggleVideo}/>}
+            {audioCall && <AudioRoom open={audioCall} handleClose={handleToggleAudio}/>}
+            
 
             {userInfoOpen && (
                 <div className="w-1/4">

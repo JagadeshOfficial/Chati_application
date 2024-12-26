@@ -40,7 +40,7 @@ export default function Dropdown() {
         document.addEventListener("keydown" , keyHandler);
 
         return() => document.removeEventListener("keydown", keyHandler);
-    })
+    });
 
     return (
         <div className='relative flex'>
