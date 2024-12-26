@@ -31,7 +31,7 @@ export default function Sidebar() {
   };
   return (
     <div className="flex flex-col border-r border-stroke p-2 dark:border-strokedark  dark:bg-boxdark-2">
-      <ChatTeardropText size={34} weight="bold" className="text-primary "/>
+      <ChatTeardropText size={34} weight="bold" className="text-primary  "/>
 
       <div className="flex flex-col items-center space-y-5">
         
@@ -59,9 +59,11 @@ export default function Sidebar() {
           <DarkModeSwitcher />
         </div>  
         
-        <div className="flex flex-row items-center justify-center border rounded-md border-stroke p-2 dark:border-strokedark hover:bg-stone-100 hover:cursor-pointer">
+        <button onClick={() => {
+          navigate("/")
+        }} className="flex flex-row items-center justify-center border rounded-md border-stroke p-2 dark:border-strokedark hover:bg-stone-100 hover:cursor-pointer">
           <SignOut size={24} />
-        </div>
+        </button>
       </div>
     </div >
   );
